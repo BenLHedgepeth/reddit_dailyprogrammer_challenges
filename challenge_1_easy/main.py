@@ -1,6 +1,9 @@
 
 import re
 import datetime
+import math
+import os
+cls = os.system('cls' if os.name == 'nt' else 'clear')
 
 def clean_value(x):
     n = int(x)
@@ -34,6 +37,7 @@ def introduce():
                 print(user[user_key]['error'])
                 continue
             else:
+                value = criteria_match.group()
                 if user_key == 'age':
                     birthday = criteria_match.group().split("-")
                     year, month, day = list(
@@ -52,7 +56,11 @@ def introduce():
                             prompt = "Double check your birthday...(YYYY-MM-DD)\n>>> "
                             user[user_key].update(prompt=prompt)
                             continue
-                user[user_key].update(value=criteria_match.group())
+                        else:
+                            value = math.floor(
+                                (today - date) / datetime.timedelta(days=365)
+                            )
+                user[user_key].update(value=value)
                 break
     name, age, username = [
         user['name']['value'], user['age']['value'], user['username']['value']
